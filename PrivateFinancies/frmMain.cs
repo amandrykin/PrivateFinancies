@@ -14,7 +14,7 @@ namespace PrivateFinancies
     {
         public DataClasses1DataContext db;
         private enum MoveDirection { Up, Down };
-        public enum AdditionCase { AccountSingle, AccountGroup, ItemSingle, ItemGroup };
+        private enum AdditionCase { AccountSingle, AccountGroup, ItemSingle, ItemGroup };
 
         public frmMain()
         {
@@ -131,7 +131,15 @@ namespace PrivateFinancies
             }
 
             // Account creation dialog
-            FormCreate dialog = new FormCreate(db, additionCase);
+            FormCreate dialog;
+            if (additionCase == AdditionCase.AccountSingle)
+            {
+                dialog = new FormCreate(db, true, "Создание счета", "Название счета:");
+            }
+            else
+            {
+                dialog = new FormCreate(db, false, "Создание группы счетов", "Название группы счетов:");
+            }
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.Cancel)
                 return;
@@ -207,7 +215,15 @@ namespace PrivateFinancies
             }
 
             // Item creation dialog
-            FormCreate dialog = new FormCreate(db, additionCase);
+            FormCreate dialog;
+            if (additionCase == AdditionCase.AccountSingle)
+            {
+                dialog = new FormCreate(db, false, "Создание статьи", "Название статьи:");
+            }
+            else
+            {
+                dialog = new FormCreate(db, false, "Создание группы статей", "Название группы статей:");
+            }
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.Cancel)
                 return;
@@ -223,8 +239,7 @@ namespace PrivateFinancies
 
             // Item creation
             Item item = new Item();
-            item.IsFolder = (additionCase == AdditionCase.AccountGroup ||
-                additionCase == AdditionCase.ItemGroup) ? true : false;
+            item.IsFolder = (additionCase == AdditionCase.ItemGroup);
             item.Parent = parentItem.Id;
             item.Name = inputName;
 
@@ -258,6 +273,9 @@ namespace PrivateFinancies
             // TODO: add confirmation
             // Supports delete of accounts and account groups
             Account account = (Account)trvAccounts.SelectedNode.Tag;
+            if (account.Parent == null)
+                return;
+
             if (account.IsFolder)
             {
                 IEnumerable<Account> deletingAccounts = db.Account.Where(x => x.Parent == account.Id);
@@ -286,6 +304,9 @@ namespace PrivateFinancies
             // TODO: add confirmation
             // Supports delete of items and item groups
             Item item = (Item)trvItems.SelectedNode.Tag;
+            if (item.Parent == null)
+                return;
+
             if (item.IsFolder)
             {
                 IEnumerable<Item> deletingItems = db.Item.Where(x => x.Parent == item.Id);
@@ -306,6 +327,84 @@ namespace PrivateFinancies
 
             TreeNode node = trvItems.SelectedNode;
             node.Parent.Nodes.Remove(node);
+        }
+
+        private void btnEditAccount_Click(object sender, EventArgs e)
+        {
+            // Supports edit of accounts and account groups
+
+            Account account = (Account)trvAccounts.SelectedNode.Tag;
+
+            // Account edit dialog
+            FormCreate dialog;
+            if (!account.IsFolder)
+            {
+                dialog = new FormCreate(db, false, "Редактирование счета", "Название счета:", account.Name);
+            }
+            else
+            {
+                dialog = new FormCreate(db, false, "Редактирование группы счетов", "Название группы счетов:", account.Name);
+            }
+            DialogResult result = dialog.ShowDialog();
+            if (result == DialogResult.Cancel)
+                return;
+            string inputName = dialog.InputName.Trim();
+
+            // Check for name uniqueness
+            if (db.Account.Any(x => x.Name == inputName))
+            {
+                MessageBox.Show(String.Format("Счет или группа счетов с именем '{0}' уже существует.", inputName),
+                    "Ошибка создания статьи", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Saving to DB
+            account.Name = inputName;
+            db.SubmitChanges();
+
+            // Change node text in tree view
+            TreeNode node = trvAccounts.SelectedNode;
+            node.Text = account.Name;
+            node.Tag = account;
+        }
+
+        private void btnEditItem_Click(object sender, EventArgs e)
+        {
+            // Supports edit of items and item groups
+
+            Item item = (Item)trvItems.SelectedNode.Tag;
+
+            // Item edit dialog
+            FormCreate dialog;
+            if (!item.IsFolder)
+            {
+                dialog = new FormCreate(db, false, "Редактирование статьи", "Название статьи:", item.Name);
+            }
+            else
+            {
+                dialog = new FormCreate(db, false, "Редактирование группы статей", "Название группы статей:", item.Name);
+            }
+            DialogResult result = dialog.ShowDialog();
+            if (result == DialogResult.Cancel)
+                return;
+            string inputName = dialog.InputName.Trim();
+
+            // Check for name uniqueness
+            if (db.Item.Any(x => x.Name == inputName))
+            {
+                MessageBox.Show(String.Format("Статья или группа статей с именем '{0}' уже существует.", inputName),
+                    "Ошибка создания статьи", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Saving to DB
+            item.Name = inputName;
+            db.SubmitChanges();
+
+            // Change node text in tree view
+            TreeNode node = trvItems.SelectedNode;
+            node.Text = item.Name;
+            node.Tag = item;
         }
 
         private void btnAccountUp_Click(object sender, EventArgs e)
@@ -514,5 +613,6 @@ namespace PrivateFinancies
                 row.Cells["number"].Value = ((Currency)row.Tag).OrderNumber;
             }
         }
+
     }
 }

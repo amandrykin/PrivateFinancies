@@ -14,20 +14,17 @@ namespace PrivateFinancies
     {
         public string InputName { get; set; }
         public string InputCurrency { get; set; }
-        private frmMain.AdditionCase additionCase;
+        private bool useCurrency;
 
-        public FormCreate(DataClasses1DataContext db, frmMain.AdditionCase additionCase)
+        public FormCreate(DataClasses1DataContext db, bool useCurrency, string formTitle, string labelText)
         {
-            // TODO: 1) Get all currencies easier, without Where()
-
             InitializeComponent();
 
-            this.additionCase = additionCase;
-
-            if (additionCase == frmMain.AdditionCase.AccountSingle)
+            this.useCurrency = useCurrency;
+            if (useCurrency)
             {
                 cmbCurrency.Items.Clear();
-                IEnumerable<Currency> currencies = db.Currency.Where(x => true);
+                IEnumerable<Currency> currencies = db.Currency;
                 int mainCurrencyIndex = 0;
                 foreach (Currency currency in currencies)
                 {
@@ -43,29 +40,24 @@ namespace PrivateFinancies
                 cmbCurrency.Visible = false;
             }
 
-            switch (additionCase)
-            {
-                case frmMain.AdditionCase.AccountSingle:
-                    break;  // default values are valid
-                case frmMain.AdditionCase.AccountGroup:
-                    Text = "Создание группы счетов";
-                    lblName.Text = "Название группы счетов";
-                    break;
-                case frmMain.AdditionCase.ItemSingle:
-                    Text = "Создание статьи";
-                    lblName.Text = "Название статьи";
-                    break;
-                case frmMain.AdditionCase.ItemGroup:
-                    Text = "Создание группы статей";
-                    lblName.Text = "Название группы статей";
-                    break;
-                default:
-                    break;
-            }
+            Text = formTitle;
+            lblName.Text = labelText;
 
             txtName.Focus();
         }
-        
+
+        public FormCreate(DataClasses1DataContext db, bool useCurrency, string formTitle, string labelText,
+            string name) : this(db, useCurrency, formTitle, labelText)
+        {
+            txtName.Text = name;
+        }
+
+        public FormCreate(DataClasses1DataContext db, bool useCurrency, string formTitle, string labelText,
+            string name, string currency) : this(db, useCurrency, formTitle, labelText, name)
+        {
+            //cmbCurrency = currency;
+        }
+
         private void txtName_TextChanged(object sender, EventArgs e)
         {
             if (txtName.Text != "")
@@ -78,7 +70,7 @@ namespace PrivateFinancies
         {
             InputName = txtName.Text;
 
-            if (additionCase == frmMain.AdditionCase.AccountSingle)
+            if (useCurrency)
             {
                 InputCurrency = (string)cmbCurrency.SelectedItem;
             }

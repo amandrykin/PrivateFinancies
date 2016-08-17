@@ -57,6 +57,8 @@
             this.tabOperations = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tcMain = new System.Windows.Forms.TabControl();
+            this.btnEditAccount = new System.Windows.Forms.Button();
+            this.btnEditItem = new System.Windows.Forms.Button();
             this.tabCurrencies.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrencies)).BeginInit();
             this.tabItems.SuspendLayout();
@@ -192,6 +194,7 @@
             // 
             // tabItems
             // 
+            this.tabItems.Controls.Add(this.btnEditItem);
             this.tabItems.Controls.Add(this.btnCreateItemGroup);
             this.tabItems.Controls.Add(this.btnItemDown);
             this.tabItems.Controls.Add(this.btnItemUp);
@@ -219,7 +222,7 @@
             // btnItemDown
             // 
             this.btnItemDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnItemDown.Location = new System.Drawing.Point(644, 105);
+            this.btnItemDown.Location = new System.Drawing.Point(644, 134);
             this.btnItemDown.Name = "btnItemDown";
             this.btnItemDown.Size = new System.Drawing.Size(50, 23);
             this.btnItemDown.TabIndex = 9;
@@ -230,7 +233,7 @@
             // btnItemUp
             // 
             this.btnItemUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnItemUp.Location = new System.Drawing.Point(589, 105);
+            this.btnItemUp.Location = new System.Drawing.Point(589, 134);
             this.btnItemUp.Name = "btnItemUp";
             this.btnItemUp.Size = new System.Drawing.Size(50, 23);
             this.btnItemUp.TabIndex = 8;
@@ -241,7 +244,7 @@
             // btnDeleteItem
             // 
             this.btnDeleteItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeleteItem.Location = new System.Drawing.Point(589, 64);
+            this.btnDeleteItem.Location = new System.Drawing.Point(589, 93);
             this.btnDeleteItem.Name = "btnDeleteItem";
             this.btnDeleteItem.Size = new System.Drawing.Size(106, 23);
             this.btnDeleteItem.TabIndex = 4;
@@ -273,6 +276,7 @@
             // 
             // tabAccounts
             // 
+            this.tabAccounts.Controls.Add(this.btnEditAccount);
             this.tabAccounts.Controls.Add(this.btnAccountDown);
             this.tabAccounts.Controls.Add(this.btnAccountUp);
             this.tabAccounts.Controls.Add(this.btCreateAccountGroup);
@@ -290,7 +294,7 @@
             // btnAccountDown
             // 
             this.btnAccountDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAccountDown.Location = new System.Drawing.Point(644, 105);
+            this.btnAccountDown.Location = new System.Drawing.Point(644, 134);
             this.btnAccountDown.Name = "btnAccountDown";
             this.btnAccountDown.Size = new System.Drawing.Size(50, 23);
             this.btnAccountDown.TabIndex = 7;
@@ -301,7 +305,7 @@
             // btnAccountUp
             // 
             this.btnAccountUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAccountUp.Location = new System.Drawing.Point(589, 105);
+            this.btnAccountUp.Location = new System.Drawing.Point(589, 134);
             this.btnAccountUp.Name = "btnAccountUp";
             this.btnAccountUp.Size = new System.Drawing.Size(50, 23);
             this.btnAccountUp.TabIndex = 6;
@@ -323,7 +327,7 @@
             // btnDeleteAccount
             // 
             this.btnDeleteAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeleteAccount.Location = new System.Drawing.Point(589, 64);
+            this.btnDeleteAccount.Location = new System.Drawing.Point(589, 93);
             this.btnDeleteAccount.Name = "btnDeleteAccount";
             this.btnDeleteAccount.Size = new System.Drawing.Size(106, 23);
             this.btnDeleteAccount.TabIndex = 3;
@@ -390,6 +394,28 @@
             this.tcMain.Size = new System.Drawing.Size(711, 364);
             this.tcMain.TabIndex = 0;
             // 
+            // btnEditAccount
+            // 
+            this.btnEditAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEditAccount.Location = new System.Drawing.Point(589, 64);
+            this.btnEditAccount.Name = "btnEditAccount";
+            this.btnEditAccount.Size = new System.Drawing.Size(106, 23);
+            this.btnEditAccount.TabIndex = 8;
+            this.btnEditAccount.Text = "Редактировать";
+            this.btnEditAccount.UseVisualStyleBackColor = true;
+            this.btnEditAccount.Click += new System.EventHandler(this.btnEditAccount_Click);
+            // 
+            // btnEditItem
+            // 
+            this.btnEditItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEditItem.Location = new System.Drawing.Point(589, 64);
+            this.btnEditItem.Name = "btnEditItem";
+            this.btnEditItem.Size = new System.Drawing.Size(106, 23);
+            this.btnEditItem.TabIndex = 11;
+            this.btnEditItem.Text = "Редактировать";
+            this.btnEditItem.UseVisualStyleBackColor = true;
+            this.btnEditItem.Click += new System.EventHandler(this.btnEditItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -441,6 +467,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fullName;
         private System.Windows.Forms.DataGridViewTextBoxColumn shortName;
         private System.Windows.Forms.DataGridViewCheckBoxColumn mainCurrency;
+        private System.Windows.Forms.Button btnEditItem;
+        private System.Windows.Forms.Button btnEditAccount;
     }
 }
 
